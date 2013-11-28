@@ -1,5 +1,6 @@
 goecho
 ======
+[![Build Status](https://drone.io/github.com/tobyzxj/goecho/status.png)](https://drone.io/github.com/tobyzxj/goecho/latest)
 
 TCP &amp; UDP echo server with golang
 
