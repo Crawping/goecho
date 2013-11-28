@@ -13,7 +13,7 @@ TCP &amp; UDP echo server with golang
 * ...
 
 
-## INTALL
+## INSTALL
 
 **STEP1: installing Go**
 	
