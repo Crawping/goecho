@@ -5,12 +5,28 @@ goecho
 TCP &amp; UDP echo server with golang
 
 
-## Features
+## FEATURES
 
 * TCP echo support
 * UDP echo support
 * A Monitor to control echo clients
 * ...
+
+
+## INTALL
+
+**STEP1: installing Go**
+	
+> see [http://golang.org/doc/install](http://golang.org/doc/install "Installing Go")
+
+    
+**STEP2: install goecho**
+
+    $ go get github.com/tobyzxj/goecho
+    $ cd src/github.com/tobyzxj/goecho
+    $ git build goecho.go
+    $ ./goecho
+     
 
 ## LICENSE
 
