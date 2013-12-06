@@ -1,9 +1,17 @@
-/**
- * Created with IntelliJ IDEA.
- * User: toby.zxj
- * Email: toby.zxj@gamil.com
- * Date: 13-11-24 下午2:44
- */
+// Copyright 2013 toby.zxj
+//
+// Licensed under the Apache License, Version 2.0 (the "License"): you may
+// not use this file except in compliance with the License. You may obtain
+// a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+// License for the specific language governing permissions and limitations
+// under the License.package main
+
 package echo
 
 import (
@@ -20,8 +28,6 @@ var EchoId int = 0
 var EchoTimeout uint64 = 120
 var EchoChan = make(chan string, 10)
 var PEchoTick *EchoTick = nil
-
-// 120 Seconds
 
 // echo client, tcp & udp client
 type EchoClient struct {
@@ -43,21 +49,25 @@ type EchoTick struct {
 	tick uint64
 }
 
+// Get tick's tick
 func (this *EchoTick) Get() uint64 {
 	return this.tick
 }
 
+// Tick tick
 func (this *EchoTick) Tick() {
 	this.tick++
 }
 
+// Set the value of tick
 func (this *EchoTick) Set(tick uint64) {
 	this.tick = tick
 }
 
+// Create a echo tick
 func EchoTickCreate(client *[]*EchoClient, mux *sync.Mutex) {
 	PEchoTick = &EchoTick{tick: 0}
-	timer := time.NewTicker(1*time.Second)
+	timer := time.NewTicker(1 * time.Second)
 
 	for {
 		select {
@@ -101,7 +111,7 @@ RECHECK:
 				if len(*client) == 1 {
 					// remove only one
 					*client = make([]*EchoClient, 0)
-				} else if i == len(*client) - 1 {
+				} else if i == len(*client)-1 {
 					// remove last one
 					*client = (*client)[:i]
 					break RECHECK
@@ -109,7 +119,7 @@ RECHECK:
 					// remove first one
 					*client = (*client)[1:]
 				} else {
-					*client = append((*client)[:i], (*client)[(i + 1):]...)
+					*client = append((*client)[:i], (*client)[(i+1):]...)
 				}
 				//EchoChan <- "CLEAR-SCREEN"
 			default:

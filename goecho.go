@@ -1,9 +1,17 @@
-/**
- * Created with IntelliJ IDEA.
- * User: toby.zxj
- * Email: toby.zxj@gamil.com
- * Date: 13-11-24 下午2:42
- */
+// Copyright 2013 toby.zxj
+//
+// Licensed under the Apache License, Version 2.0 (the "License"): you may
+// not use this file except in compliance with the License. You may obtain
+// a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+// License for the specific language governing permissions and limitations
+// under the License.package main
+
 package main
 
 import (
@@ -11,18 +19,19 @@ import (
 	"log"
 	"os"
 	//"os/exec"
+	"bufio"
 	"github.com/tobyzxj/goecho/echo"
 	"github.com/tobyzxj/goecho/monitor"
 	"runtime"
 	"sync"
 	"time"
-	"bufio"
 )
 
 const (
 	SHOW_CLIENT_NUM_MAX int = 30
 )
 
+// TCP & UDP echo server with a remoter monitor
 func main() {
 	var (
 		echoclient []*echo.EchoClient
@@ -66,7 +75,7 @@ func main() {
 				case "CLEAR-SCREEN":
 					//fmt.Printf("\033[2J") // clear screen
 					fmt.Printf("\033[6;1H")
-					for i:=0; i<SHOW_CLIENT_NUM_MAX; i++ {
+					for i := 0; i < SHOW_CLIENT_NUM_MAX; i++ {
 						fmt.Println("                                                                                           ")
 					}
 				default:
@@ -87,13 +96,13 @@ func main() {
 			year, month, day := t.Date()
 			hour, min, sec := t.Clock()
 			fmt.Printf("goecho - %04d/%02d/%02d %02d:%02d:%02d up, running %d days %02d:%02d:%02d\r\n",
-				    year, month, day, hour, min, sec,
-					(*echo.PEchoTick).Get()/86400,
-					(*echo.PEchoTick).Get()/3600,
-					(*echo.PEchoTick).Get()/60,
-					(*echo.PEchoTick).Get()%60)
+				year, month, day, hour, min, sec,
+				(*echo.PEchoTick).Get()/86400,
+				(*echo.PEchoTick).Get()/3600,
+				(*echo.PEchoTick).Get()/60,
+				(*echo.PEchoTick).Get()%60)
 			fmt.Printf("total: %d (UDP:%d, TCP:%d) users: %d\r\n",
-					client_udp_num+client_tcp_num, client_udp_num, client_tcp_num, monitor.MonitorsGet())
+				client_udp_num+client_tcp_num, client_udp_num, client_tcp_num, monitor.MonitorsGet())
 			fmt.Println("===========================================================================")
 			fmt.Println("--INDEX----TYPE----REMOTE------------------TIMEOUT-----RECV----------SEND--")
 			echoMux.Lock()
@@ -121,7 +130,7 @@ func main() {
 		running := true
 		reader := bufio.NewReader(os.Stdin)
 		for running {
-		   	data, _, _ := reader.ReadLine()
+			data, _, _ := reader.ReadLine()
 			cmd := string(data)
 			switch cmd {
 			case "q":

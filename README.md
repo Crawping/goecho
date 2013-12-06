@@ -9,7 +9,7 @@ TCP &amp; UDP echo server with golang
 
 * TCP echo support
 * UDP echo support
-* A Monitor to control echo clients
+* A Monitor to control echo clients `like a mircoTelnet`
 * ...
 
 

@@ -1,9 +1,17 @@
-/**
- * Created with IntelliJ IDEA.
- * User: toby.zxj
- * Email: toby.zxj@gamil.com
- * Date: 13-11-24 下午2:46
- */
+// Copyright 2013 toby.zxj
+//
+// Licensed under the Apache License, Version 2.0 (the "License"): you may
+// not use this file except in compliance with the License. You may obtain
+// a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+// License for the specific language governing permissions and limitations
+// under the License.package main
+
 package echo
 
 import (
@@ -75,14 +83,14 @@ func TCPEchoHandle(conn net.Conn, stcpc *[]*EchoClient, mux *sync.Mutex, tcpc *E
 				if len(*stcpc) == 1 {
 					// remove only one
 					*stcpc = make([]*EchoClient, 0)
-				} else if i == len(*stcpc) - 1 {
+				} else if i == len(*stcpc)-1 {
 					// remove last one
 					*stcpc = (*stcpc)[:i]
 				} else if i == 0 {
 					// remove first one
 					*stcpc = (*stcpc)[1:]
 				} else {
-					*stcpc = append((*stcpc)[:i], (*stcpc)[(i + 1):]...)
+					*stcpc = append((*stcpc)[:i], (*stcpc)[(i+1):]...)
 				}
 				break
 			}
@@ -107,7 +115,7 @@ func TCPEchoHandle(conn net.Conn, stcpc *[]*EchoClient, mux *sync.Mutex, tcpc *E
 
 		default:
 			// read
-			conn.SetReadDeadline(time.Now().Add(time.Second*time.Duration(EchoTimeout)))
+			conn.SetReadDeadline(time.Now().Add(time.Second * time.Duration(EchoTimeout)))
 			n, err := conn.Read(buf[:])
 			if err != nil {
 				log.Println("[TCPERR]", "conn.Read: ", err.Error())
