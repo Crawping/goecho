@@ -63,7 +63,7 @@ func main() {
 	log.Println("Start UDP Succeed.")
 
 	// 3. START A MONITER
-	go monitor.MonitorRun(":60000")
+	go monitor.MonitorRun(":60000", &echoclient, &echoMux)
 
 	// 4. Check Cs
 	fmt.Printf("\033[2J") // clear screen
@@ -108,11 +108,11 @@ func main() {
 			echoMux.Lock()
 			client_tcp_num = 0
 			client_udp_num = 0
-			for n, v := range echoclient {
+			for i, v := range echoclient {
 				//fmt.Println(n, v)
-				if n < SHOW_CLIENT_NUM_MAX {
+				if i < SHOW_CLIENT_NUM_MAX {
 					fmt.Printf("  %05v    %s     %-21s   %04v        %-10v    %-10v\r\n",
-						n, v.EchoType, v.Ip, v.RunTick, v.RecvByteNum, v.SendByteNum)
+						i, v.EchoType, v.Ip, v.RunTick, v.RecvByteNum, v.SendByteNum)
 				}
 				if v.EchoType == "TCP" {
 					client_tcp_num++

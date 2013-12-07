@@ -18,14 +18,14 @@ import (
 	"bufio"
 	"container/list"
 	"fmt"
+	. "github.com/tobyzxj/goecho/echo"
 	"io"
 	"log"
 	"net"
 	"strings"
 	"sync"
 	"time"
-
-//	"net/textproto"
+	//"net/textproto"
 )
 
 var MonitorNum int = 0
@@ -49,7 +49,7 @@ type MonitorClient struct {
 	Msg     chan string
 }
 
-func MonitorRun(service string) {
+func MonitorRun(service string, clients *[]*EchoClient, mux_clients *sync.Mutex) {
 	var (
 		monitorId  int = 0
 		monitorMux sync.Mutex
@@ -105,12 +105,12 @@ func MonitorRun(service string) {
 		monitorList.PushBack(elem)
 		monitorMux.Unlock()
 
-		go monitorHandle(monitorList, &monitorMux, elem)
+		go monitorHandle(monitorList, &monitorMux, elem, clients, mux_clients)
 	}
 }
 
 // monitor client handle
-func monitorHandle(l *list.List, mux *sync.Mutex, c *MonitorClient) {
+func monitorHandle(l *list.List, mux *sync.Mutex, c *MonitorClient, clients *[]*EchoClient, mux_clients *sync.Mutex) {
 	defer func() {
 		c.conn.Close()
 
@@ -187,7 +187,7 @@ func monitorHandle(l *list.List, mux *sync.Mutex, c *MonitorClient) {
 		for _, cmd := range commands {
 			if cmd.Name() == args[0] && cmd.Run != nil {
 				//log.Println("Find cmd", cmd.Name())
-				cmd.Run(cmd, args, stream_out)
+				cmd.Run(cmd, args, stream_out, clients, mux_clients)
 				isFind = true
 			}
 		}
@@ -241,6 +241,6 @@ func CheckMonitorError(err error) error {
 //////////////// MAP Command --> Handle ///////////////////////
 var commands = []*Command{
 	cmdAT,
-	//cmdLIST,
+	cmdLIST,
 	//cmdRun,
 }

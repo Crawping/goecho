@@ -65,20 +65,20 @@ func (this *EchoTick) Set(tick uint64) {
 }
 
 // Create a echo tick
-func EchoTickCreate(client *[]*EchoClient, mux *sync.Mutex) {
+func EchoTickCreate(clients *[]*EchoClient, mux *sync.Mutex) {
 	PEchoTick = &EchoTick{tick: 0}
 	timer := time.NewTicker(1 * time.Second)
 
 	for {
 		select {
 		case <-timer.C:
-			EchoTickTick(client, mux, PEchoTick)
+			EchoTickTick(clients, mux, PEchoTick)
 		}
 	}
 }
 
 // performed once every second
-func EchoTickTick(client *[]*EchoClient, mux *sync.Mutex, tick *EchoTick) {
+func EchoTickTick(clients *[]*EchoClient, mux *sync.Mutex, tick *EchoTick) {
 
 	if tick != nil {
 		tick.Tick()
@@ -88,9 +88,9 @@ func EchoTickTick(client *[]*EchoClient, mux *sync.Mutex, tick *EchoTick) {
 
 	mux.Lock()
 RECHECK:
-	for i, v := range *client {
+	for i, v := range *clients {
 		if i >= index {
-			((*client)[i]).RunTick++
+			((*clients)[i]).RunTick++
 		} else {
 			continue
 		}
@@ -108,18 +108,18 @@ RECHECK:
 				//runtime.Goexit()
 
 			case "UDP":
-				if len(*client) == 1 {
+				if len(*clients) == 1 {
 					// remove only one
-					*client = make([]*EchoClient, 0)
-				} else if i == len(*client)-1 {
+					*clients = make([]*EchoClient, 0)
+				} else if i == len(*clients)-1 {
 					// remove last one
-					*client = (*client)[:i]
+					*clients = (*clients)[:i]
 					break RECHECK
 				} else if i == 0 {
 					// remove first one
-					*client = (*client)[1:]
+					*clients = (*clients)[1:]
 				} else {
-					*client = append((*client)[:i], (*client)[(i+1):]...)
+					*clients = append((*clients)[:i], (*clients)[(i+1):]...)
 				}
 				//EchoChan <- "CLEAR-SCREEN"
 			default:

@@ -17,6 +17,8 @@ package monitor
 import (
 	//"fmt"
 	"bufio"
+	. "github.com/tobyzxj/goecho/echo"
+	"sync"
 )
 
 var cmdAT = &Command{
@@ -28,11 +30,12 @@ func init() {
 	cmdAT.Run = atEcho
 }
 
-func atEcho(cmd *Command, args []string, w *bufio.Writer) {
+func atEcho(cmd *Command, args []string, w *bufio.Writer, clients *[]*EchoClient, mux_clients *sync.Mutex) {
 	//w.Write([]byte("\r\n"))
 	if len(args) == 1 {
-		w.Write([]byte("OK\r\n"))
+		w.Write([]byte("OK"))
 	}
 
+	w.Write([]byte("\r\n"))
 	w.Flush()
 }

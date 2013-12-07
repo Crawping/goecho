@@ -17,14 +17,18 @@ package monitor
 import (
 	//"fmt"
 	"bufio"
+	. "github.com/tobyzxj/goecho/echo"
 	"strings"
+	"sync"
 )
 
 type Command struct {
 	// Run runs the command.
 	// The args are the arguments after the command name.
 	// The w is the output stream.
-	Run func(cmd *Command, args []string, w *bufio.Writer)
+	// The clients is echo clients.
+	// The mux_clients is mux for echo clients.
+	Run func(cmd *Command, args []string, w *bufio.Writer, clients *[]*EchoClient, mux_clients *sync.Mutex)
 
 	// UsageLine is the one-line usage message.
 	// The first word in the line is taken to be the command name.
@@ -48,4 +52,15 @@ func (this *Command) Name() string {
 // it is a documentation pseudo-command such as importpath.
 func (this *Command) Runnable() bool {
 	return this.Run != nil
+}
+
+// Usage returns the command's usage infomation
+func (this *Command) Usage() string {
+	str := "Usage: \r\n\t" + this.UsageLine
+	return str
+}
+
+// Help returns the command's help infomation
+func (this *Command) help() string {
+	return this.Short
 }
