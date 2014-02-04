@@ -24,7 +24,7 @@ TCP &amp; UDP echo server with golang
 
     $ go get github.com/tobyzxj/goecho
     $ cd src/github.com/tobyzxj/goecho
-    $ git build goecho.go
+    $ go build goecho.go
     $ ./goecho
      
 
