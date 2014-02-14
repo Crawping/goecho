@@ -63,7 +63,7 @@ func main() {
 	log.Println("Start UDP Succeed.")
 
 	// 3. START A MONITER
-	go monitor.MonitorRun(":60000", &echoclient, &echoMux)
+	go monitor.MonitorRun(":60001", &echoclient, &echoMux)
 
 	// 4. Check Cs
 	fmt.Printf("\033[2J") // clear screen
